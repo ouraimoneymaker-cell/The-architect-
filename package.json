@@ -1,0 +1,10 @@
+{
+  "name": "ultimate-prompt-architect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static prompt builder for Claude Opus 4.6, Gemini 3 Pro, and modern reasoning models.",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "check": "node --check app.js"
+  }
+}

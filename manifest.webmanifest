@@ -1,0 +1,9 @@
+{
+  "name": "Ultimate Prompt Architect",
+  "short_name": "UPA",
+  "description": "Build and export production grade system prompts for modern reasoning models.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070b16",
+  "theme_color": "#0b1020"
+}
