@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ultimate Prompt Architect is a browser based prompt builder for Claude Opus 4.6, Gemini 3 Pro, and modern reasoning models.">
+  <meta name="theme-color" content="#0b1020">
+  <meta property="og:title" content="Ultimate Prompt Architect">
+  <meta property="og:description" content="Build, verify, copy, and export production grade system prompts.">
+  <meta property="og:type" content="website">
+  <title>Ultimate Prompt Architect</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#builder">Skip to builder</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Ultimate Prompt Architect home">
+        <span class="brand-mark" aria-hidden="true">UPA</span>
+        <span>
+          <strong>Ultimate Prompt Architect</strong>
+          <small>Prompt systems for reasoning models</small>
+        </span>
+      </a>
+      <div class="nav-actions">
+        <a href="#builder">Build</a>
+        <a href="#quality">Quality</a>
+        <a href="#docs">Docs</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Claude Opus 4.6 + Gemini 3 Pro</p>
+        <h1>Generate launch grade system prompts without losing structure, safeguards, or formatting.</h1>
+        <p class="hero-text">UPA turns rough prompt ideas into complete prompt files with clarification logic, modification rules, model parameters, safety controls, validation, copy, and markdown export.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#builder">Start building</a>
+          <button class="button ghost" type="button" data-fill-demo>Load demo</button>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Launch readiness summary">
+        <h2>Public launch ready</h2>
+        <ul class="check-list">
+          <li>No backend required</li>
+          <li>No paid services required</li>
+          <li>Mobile responsive</li>
+          <li>Local browser saving</li>
+          <li>Markdown export</li>
+          <li>Prompt injection defenses</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="builder" class="builder-grid section-shell" aria-labelledby="builder-title">
+      <div class="panel form-panel">
+        <div class="section-heading compact">
+          <p class="eyebrow">Builder</p>
+          <h2 id="builder-title">Prompt intake</h2>
+          <p>Fill in what matters. Leave anything blank and UPA will apply safe defaults.</p>
+        </div>
+
+        <form id="promptForm" autocomplete="off">
+          <div class="field-pair">
+            <label>
+              Project or assistant name
+              <input id="projectName" name="projectName" type="text" maxlength="90" placeholder="Example: Legal Intake Assistant">
+            </label>
+            <label>
+              Active language
+              <select id="activeLanguage" name="activeLanguage">
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+                <option value="French">French</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="German">German</option>
+                <option value="Italian">Italian</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            What should the finished AI do?
+            <textarea id="primaryGoal" name="primaryGoal" rows="4" maxlength="1600" placeholder="Describe the exact job, workflow, audience, and outcome."></textarea>
+          </label>
+
+          <div class="field-pair">
+            <label>
+              Request type
+              <select id="requestType" name="requestType">
+                <option value="create">Create a new prompt</option>
+                <option value="modify">Modify an existing prompt</option>
+                <option value="agentic">Create an agentic workflow prompt</option>
+                <option value="audit">Audit and repair a prompt</option>
+              </select>
+            </label>
+            <label>
+              Complexity
+              <select id="complexity" name="complexity">
+                <option value="adaptive">Adaptive</option>
+                <option value="simple">Simple</option>
+                <option value="medium">Medium</option>
+                <option value="complex">Complex</option>
+              </select>
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Target models</legend>
+            <div class="checkbox-row">
+              <label><input type="checkbox" name="models" value="Claude Opus 4.6" checked> Claude Opus 4.6</label>
+              <label><input type="checkbox" name="models" value="Gemini 3 Pro" checked> Gemini 3 Pro</label>
+              <label><input type="checkbox" name="models" value="Other reasoning models"> Other reasoning models</label>
+            </div>
+          </fieldset>
+
+          <div class="field-pair">
+            <label>
+              Clarification style
+              <select id="clarificationMode" name="clarificationMode">
+                <option value="mandatory">Mandatory clarification loop</option>
+                <option value="balanced">Balanced clarification when useful</option>
+                <option value="minimal">Minimal clarification, proceed with defaults</option>
+              </select>
+            </label>
+            <label>
+              Output style
+              <select id="outputStyle" name="outputStyle">
+                <option value="documentation">Full documentation file</option>
+                <option value="prompt-only">Prompt only</option>
+                <option value="implementation">Implementation prompt for an app or agent</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            Required rules and constraints
+            <textarea id="constraints" name="constraints" rows="4" maxlength="2000" placeholder="Add locked behavior, forbidden changes, tone, formatting, safety, or modification rules."></textarea>
+          </label>
+
+          <label>
+            Existing prompt, context, files, or reference material
+            <textarea id="sourceContext" name="sourceContext" rows="5" maxlength="6000" placeholder="Paste existing prompt or reference material. This will be placed before instructions in the generated prompt."></textarea>
+          </label>
+
+          <label>
+            Desired final output format
+            <textarea id="desiredOutput" name="desiredOutput" rows="3" maxlength="1200" placeholder="Example: Markdown file with title, filename, key features, parameters, prompt block."></textarea>
+          </label>
+
+          <label>
+            Positive examples to include
+            <textarea id="examples" name="examples" rows="4" maxlength="2200" placeholder="Add 1 to 5 short examples of desired input and output behavior."></textarea>
+          </label>
+
+          <div class="button-row">
+            <button class="button primary" type="submit">Generate prompt</button>
+            <button class="button" type="button" data-copy>Copy output</button>
+            <button class="button" type="button" data-download>Download .md</button>
+            <button class="button ghost" type="button" data-save>Save snapshot</button>
+            <button class="button ghost" type="button" data-load>Load saved</button>
+            <button class="button danger" type="button" data-clear>Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel output-panel" aria-live="polite">
+        <div class="output-header">
+          <div>
+            <p class="eyebrow">Output</p>
+            <h2>Final prompt file</h2>
+          </div>
+          <span id="statusPill" class="status-pill">Ready</span>
+        </div>
+        <pre id="output" class="output" tabindex="0">Fill in the intake and press Generate prompt.</pre>
+      </div>
+    </section>
+
+    <section id="quality" class="section-shell quality-grid" aria-labelledby="quality-title">
+      <div class="section-heading">
+        <p class="eyebrow">Quality gate</p>
+        <h2 id="quality-title">Built in launch checks</h2>
+        <p>The app validates the generated prompt for missing goal, model guidance, clarification policy, output format, injection defense, and export readiness.</p>
+      </div>
+      <div class="panel">
+        <h3>Validation</h3>
+        <ul id="validationList" class="validation-list">
+          <li class="muted">Generate a prompt to run checks.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Recommended parameters</h3>
+        <div id="parameterCards" class="parameter-cards">
+          <article>
+            <strong>Claude Opus 4.6</strong>
+            <code>temperature: 0.2</code>
+            <code>thinking: adaptive</code>
+            <code>effort: high</code>
+          </article>
+          <article>
+            <strong>Gemini 3 Pro</strong>
+            <code>temperature: 1.0</code>
+            <code>thinking_level: high</code>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="docs" class="section-shell docs-grid" aria-labelledby="docs-title">
+      <div class="section-heading">
+        <p class="eyebrow">Docs</p>
+        <h2 id="docs-title">How to use UPA</h2>
+      </div>
+      <article class="panel">
+        <h3>Best use</h3>
+        <p>Describe the role, task, input data, constraints, examples, and desired output. UPA produces a complete markdown prompt file that can be pasted into Claude, Gemini, or a prompt library.</p>
+      </article>
+      <article class="panel">
+        <h3>Modification work</h3>
+        <p>Paste the existing prompt in the context box and choose Modify. UPA will add a surgical modification protocol so the generated assistant preserves unrelated formatting and logic.</p>
+      </article>
+      <article class="panel">
+        <h3>Privacy</h3>
+        <p>This static app runs in the browser. Saved snapshots use localStorage on your device. No server, account, database, or analytics are required.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer section-shell">
+    <p>Ultimate Prompt Architect. Static, dependency free, and ready for GitHub Pages, Netlify, Vercel, or any basic web host.</p>
+    <p><a href="privacy.html">Privacy</a> <span aria-hidden="true">|</span> <a href="terms.html">Terms</a></p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
