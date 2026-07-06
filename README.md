@@ -21,7 +21,6 @@ Ultimate Prompt Architect is a static browser app for building production grade 
 - `sw.js` - Offline cache service worker.
 - `privacy.html` - Simple public privacy page.
 - `terms.html` - Simple public terms page.
-- `robots.txt` - Search engine crawl rules.
 - `.nojekyll` - GitHub Pages compatibility.
 
 ## Launch options
