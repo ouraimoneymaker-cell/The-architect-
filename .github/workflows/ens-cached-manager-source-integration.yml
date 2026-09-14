@@ -1,0 +1,66 @@
+name: ENS cached manager source integration
+
+on:
+  push:
+    branches:
+      - exec/ens-stale-resolver-20260914
+    paths:
+      - proofs/ens-cached-manager-source-integration.test.ts
+      - .github/workflows/ens-cached-manager-source-integration.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout frozen ENS audit repo
+        uses: actions/checkout@v4
+        with:
+          repository: immunefi-team/audit-comp-ens
+          ref: cda79acaad59711b943fc68207ebb3f1d0ff8596
+          fetch-depth: 1
+
+      - name: Checkout isolated harness source
+        uses: actions/checkout@v4
+        with:
+          repository: ouraimoneymaker-cell/The-architect-
+          ref: exec/ens-stale-resolver-20260914
+          path: _runner
+          fetch-depth: 1
+
+      - name: Stage exact source integration test
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum _runner/proofs/ens-cached-manager-source-integration.test.ts
+          cp _runner/proofs/ens-cached-manager-source-integration.test.ts \
+            apps/manager/src/features/migration/service/ens-cached-manager-source-integration.test.ts
+          git rev-parse HEAD
+          git diff --no-index /dev/null apps/manager/src/features/migration/service/ens-cached-manager-source-integration.test.ts || true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        shell: bash
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.27.0 --activate
+          pnpm --version
+
+      - name: Install frozen repo dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run audited-code source integration test
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm --filter manager exec vitest run \
+            src/features/migration/service/ens-cached-manager-source-integration.test.ts \
+            --reporter=verbose
