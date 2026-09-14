@@ -1,0 +1,86 @@
+name: ENS stale resolver proof v3
+
+on:
+  push:
+    branches:
+      - 'exec/ens-stale-resolver-20260914'
+
+permissions:
+  contents: read
+
+jobs:
+  poc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SEPOLIA_RPC_URL: https://ethereum-sepolia-rpc.publicnode.com
+    steps:
+      - name: Checkout frozen ENS audit repo
+        uses: actions/checkout@v4
+        with:
+          repository: immunefi-team/audit-comp-ens
+          ref: cda79acaad59711b943fc68207ebb3f1d0ff8596
+
+      - name: Checkout isolated PoC source
+        uses: actions/checkout@v4
+        with:
+          repository: ouraimoneymaker-cell/The-architect-
+          ref: exec/ens-stale-resolver-20260914
+          path: _runner
+
+      - name: Verify and stage PoC source
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum _runner/proofs/ens-transfer-stale-resolver-poc.ts
+          cp _runner/proofs/ens-transfer-stale-resolver-poc.ts e2e/scripts/ens-transfer-stale-resolver-poc.ts
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.27.0 --activate
+          pnpm --version
+
+      - name: Install repo dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Execute stale resolver authority PoC
+        shell: bash
+        run: |
+          set -euo pipefail
+          anvil \
+            --fork-url "$SEPOLIA_RPC_URL" \
+            --chain-id 11155111 \
+            --host 127.0.0.1 \
+            --port 8545 \
+            > /tmp/anvil.log 2>&1 &
+          ANVIL_PID=$!
+          trap 'kill $ANVIL_PID 2>/dev/null || true' EXIT
+
+          READY=0
+          for i in $(seq 1 60); do
+            if cast block-number --rpc-url http://127.0.0.1:8545 >/dev/null 2>&1; then
+              READY=1
+              break
+            fi
+            sleep 2
+          done
+          if [ "$READY" != "1" ]; then
+            echo 'ANVIL_BOOT_FAILED'
+            cat /tmp/anvil.log
+            exit 90
+          fi
+
+          export ANVIL_RPC_URL=http://127.0.0.1:8545
+          cd e2e
+          pnpm exec tsx scripts/ens-transfer-stale-resolver-poc.ts
