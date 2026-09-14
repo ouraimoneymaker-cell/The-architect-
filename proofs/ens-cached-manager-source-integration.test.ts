@@ -67,7 +67,7 @@ describe('ENS cached-manager source-faithful dataflow', () => {
 
     // Anchor the cache window to the exact audited hook source, not a modeled copy.
     const useV1NamesSource = readFileSync(
-      new URL('../hooks/useV1Names.ts', import.meta.url),
+      'src/features/migration/hooks/useV1Names.ts',
       'utf8',
     )
     expect(useV1NamesSource).toContain('staleTime: 5 * 60 * 1000')
