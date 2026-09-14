@@ -8,8 +8,8 @@ import {
 } from 'viem'
 import { sepolia } from 'viem/chains'
 
-import { ETH_REGISTRY_V2_ABI } from './contracts/abis'
-import { V2_CONTRACTS } from './contracts/addresses'
+import { ETH_REGISTRY_V2_ABI } from '../contracts/abis'
+import { V2_CONTRACTS } from '../contracts/addresses'
 import {
   buildAtomicMigrationBatches,
   type AtomicMigrationVerificationExpectation,
