@@ -28,7 +28,8 @@ const ATTACKER = OWNER
 const ensjsSepolia = ensL1Contracts[supportedL1Chains.sepolia]
 const ETH_REGISTRY = ensjsSepolia.ensRegistry.address
 
-const ROLE_SET_RESOLVER = 1n << 4n
+// RegistryRolesLib is nybble-packed: ROLE_SET_RESOLVER is nybble 6 => bit 24.
+const ROLE_SET_RESOLVER = 1n << 24n
 const ROLE_SET_ADDR = 1n << 0n
 
 const registryAbi = parseAbi([
